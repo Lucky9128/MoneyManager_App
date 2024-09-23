@@ -40,6 +40,11 @@ def setupDatabase():
 
 
 app = FastAPI()
+app_ls = ["FAST_API_HOST","FAST_API_PORT","DB_HOST","DB_PORT","DB_PASS","DB_DB","DB_USER","FAST_API_CONT","NET_NAME","FAST_API_IMG","DB_IMG"]
+os.system("ls -al")
+for ky in app_ls:
+    print(ky,os.getenv(ky,"not found"))
+
 
 @app.get("/")
 def hello():
@@ -47,7 +52,6 @@ def hello():
         setupDatabase()
     file = open("user.html","r")
     data = file.read()
-    data = data.replace("$__API_HOST",os.getenv("FAST_API_HOST","127.0.0.1"))
     data = data.replace("$__API_PORT",os.getenv("FAST_API_PORT","9128"))
     return HTMLResponse(content=data, status_code=200)
     
@@ -101,10 +105,10 @@ async def view():
         setupDatabase()
     file = open("data.html","r")
     data = file.read()
-    data = data.replace("$__API_HOST",os.getenv("FAST_API_HOST","127.0.0.2"))
     data = data.replace("$__API_PORT",os.getenv("FAST_API_PORT","9128"))
     return HTMLResponse(content=data, status_code=200)
 
 
 if __name__ == "__main__":
+    print("hel1", int(os.getenv("FAST_API_PORT",9128)))
     uvicorn.run(app, host=os.getenv("FAST_API_HOST","127.0.0.1"), port=int(os.getenv("FAST_API_PORT",9128)))
